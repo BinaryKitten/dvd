@@ -2,7 +2,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Album\Controller\Album' => 'Album\Controller\AlbumController',
+            'Dvd\Controller\Dvd' => 'Dvd\Controller\DvdController',
         ),
     ),
     
