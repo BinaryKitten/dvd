@@ -143,7 +143,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    'login_redirect_route' => 'dvd',
+    'login_redirect_route' => 'home',
 
     /**
      * Logout Redirect Route

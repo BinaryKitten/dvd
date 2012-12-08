@@ -1,10 +1,9 @@
 <?php
 return array(
     'modules' => array(
-        'Application',
+        'Dvd',
         'ZfcBase',
         'ZfcUser',
-        'Dvd'
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
