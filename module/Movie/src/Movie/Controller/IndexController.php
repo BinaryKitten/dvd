@@ -4,6 +4,7 @@ namespace Movie\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Debug\Debug as Zend_Debug;
 
 /**
  * Description of IndexController
@@ -16,8 +17,12 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-         return new ViewModel(array(
-            'movies' => $this->getMovieTable()->fetchAll(),
+        $userIdentity = $this->zfcUserAuthentication()->getIdentity();
+        $userMovies = $this->getMovieTable()->findAllOwnedByUser(
+          $userIdentity->getId()
+        );
+        return new ViewModel(array(
+            'movies' => $userMovies,
         ));
     }
 

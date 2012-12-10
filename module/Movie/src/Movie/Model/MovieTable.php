@@ -26,6 +26,16 @@ class MovieTable extends AbstractTableGateway
         return $resultSet;
     }
 
+    public function findAllOwnedByUser($userId)
+    {
+        $select = new \Zend\Db\Sql\Select($this->table);
+        $select
+            ->columns(array('*'))
+            ->join(array('umc'=>'user_movie_collection'), 'umc.movie_id = movie.movie_id')
+            ->where(array('umc.user_id = ?'=>$userId));
+        return $this->selectWith($select);
+    }
+
     public function getMovie($id)
     {
         $id  = (int) $id;

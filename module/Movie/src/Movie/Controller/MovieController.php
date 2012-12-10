@@ -5,5 +5,8 @@
  * @author Kathryn
  */
 class MovieController {
-    //put your code here
+    public function addAction()
+    {
+        
+    }
 }
