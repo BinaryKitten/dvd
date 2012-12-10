@@ -1,5 +1,5 @@
 <?php
-$title = 'My albums';
+$title = 'All Movies';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
@@ -9,20 +9,18 @@ $this->headTitle($title);
 <table class="table">
 <tr>
     <th>Title</th>
-    <th>Artist</th>
-    <th>&nbsp;</th>
+    <th></th>
 </tr>
-<?php /* foreach($albums as $album) : ?>
+<?php foreach($movies as $movie) : ?>
 <tr>
-    <td><?php echo $this->escapeHtml($album->title);?></td>
-    <td><?php echo $this->escapeHtml($album->artist);?></td>
+    <td><?php echo $this->escapeHtml($movie->title);?></td>
     <td>
-        <a href="<?php echo $this->url('album',
-            array('action'=>'edit', 'id' => $album->id));?>">Edit</a>
-        <a href="<?php echo $this->url('album',
-            array('action'=>'delete', 'id' => $album->id));?>">Delete</a>
+        <a href="<?php echo $this->url('movie',
+            array('action'=>'edit', 'id' => $movie->id));?>">Edit</a>
+        <a href="<?php echo $this->url('movie',
+            array('action'=>'delete', 'id' => $movie->id));?>">Delete</a>
     </td>
 </tr>
-<?php endforeach; */ ?>
+<?php endforeach; ?>
 </table>
 

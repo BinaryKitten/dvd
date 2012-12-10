@@ -1,7 +1,8 @@
 <?php
 
-namespace Album\Model;
+namespace Movie\Model;
 
+use Movie\Model\Movie as MovieModel;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
@@ -14,7 +15,7 @@ class MovieTable extends AbstractTableGateway
     {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
-        $this->resultSetPrototype->setArrayObjectPrototype(new Album());
+        $this->resultSetPrototype->setArrayObjectPrototype(new MovieModel());
 
         $this->initialize();
     }
@@ -36,15 +37,15 @@ class MovieTable extends AbstractTableGateway
         return $row;
     }
 
-    public function saveAlbum(Album $album)
+    public function saveMovie(MovieModel $movie)
     {
         $data = array(
-            'artist' => $album->artist,
-            'title'  => $album->title,
+            'title'  => $movie->title,
         );
 
-        $id = (int)$album->id;
+        $id = (int)$movie->id;
         if ($id == 0) {
+            $data['created_at'] = date('Y-m-d');
             $this->insert($data);
         } else {
             if ($this->getAlbum($id)) {

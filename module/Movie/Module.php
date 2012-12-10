@@ -1,6 +1,7 @@
 <?php
 
 namespace Movie;
+use Movie\Model\MovieTable;
 
 class Module
 {
@@ -39,8 +40,7 @@ class Module
             'factories' => array(
                 'Movie\Model\MovieTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new AlbumTable($dbAdapter);
-                    $table->setLogger($sm->get('logger'));
+                    $table = new MovieTable($dbAdapter);
                     return $table;
                 },
                 'logger' => function($sm) {

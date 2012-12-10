@@ -12,8 +12,21 @@ use Zend\View\Model\ViewModel;
  */
 class IndexController extends AbstractActionController 
 {
+    protected $movieTable;
+
     public function indexAction()
     {
-        return new ViewModel();
+         return new ViewModel(array(
+            'movies' => $this->getMovieTable()->fetchAll(),
+        ));
+    }
+
+    public function getMovieTable()
+    {
+        if (!$this->movieTable) {
+            $sm = $this->getServiceLocator();
+            $this->movieTable = $sm->get('Movie\Model\MovieTable');
+        }
+        return $this->movieTable;
     }
 }
