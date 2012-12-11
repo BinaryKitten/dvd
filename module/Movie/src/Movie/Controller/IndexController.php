@@ -21,6 +21,21 @@ class IndexController extends AbstractActionController
         $userMovies = $this->getMovieTable()->findAllOwnedByUser(
           $userIdentity->getId()
         );
+
+        /** @var \ZendService\Amazon\Amazon $amazon **/
+        $amazon = $this->getServiceLocator()->get('ZendService\Amazon\Amazon');
+        $items = $amazon->itemSearch(
+            array(
+                'AssociateTag'   => $this->getServiceLocator()->get('amazon_associate_tag'),
+                'SearchIndex'   => 'DVD',
+                'Keywords'      => 'Spirit',
+                'ResponseGroup' => 'Medium'
+            )
+        );
+        
+        foreach($items as $item) {
+            echo "<img src='".$item->SmallImage->Url."' />";
+        }
         return new ViewModel(array(
             'movies' => $userMovies,
         ));

@@ -2,6 +2,8 @@
 
 namespace Movie;
 use Movie\Model\MovieTable;
+use Zend\ServiceManager\ServiceManager;
+use ZendService\Amazon\Amazon as AmazonService;
 
 class Module
 {
@@ -48,6 +50,21 @@ class Module
                     $logger = new \Zend\Log\Logger();
                     $logger->addWriter($writer);
                     return $logger;
+                },
+                'ZendService\Amazon\Amazon' => function(ServiceManager $sm) {
+                    $fullconfig         = $sm->get('config');
+                    $amazonApiDetails   = $fullconfig['amazon_api_details'];
+                    $amazon             = new AmazonService(
+                        $amazonApiDetails['api_key'],
+                        $amazonApiDetails['region'],
+                        $amazonApiDetails['secret_key']
+                    );
+                    return $amazon;
+                },
+                'amazon_associate_tag' => function(ServiceManager $sm) {
+                    $fullconfig         = $sm->get('config');
+                    $amazonApiDetails   = $fullconfig['amazon_api_details'];
+                    return $amazonApiDetails['associate_tag'];
                 },
             ),
         );
