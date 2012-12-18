@@ -1,14 +1,14 @@
 <?php
 
-namespace Movie\Model;
+namespace Movie\DataSource;
 
-use Movie\DataSourceInterface;
-use Movie\Model\Movie as MovieModel;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
+use Movie\DataSource\Iface as DataSourceInterface;
+use Movie\Model\Movie as MovieModel;
 
-class MovieTable extends AbstractTableGateway implements DataSourceInterface
+class Database extends AbstractTableGateway implements DataSourceInterface
 {
     protected $table = 'movie';
 
@@ -70,6 +70,11 @@ class MovieTable extends AbstractTableGateway implements DataSourceInterface
     public function deleteAlbum($id)
     {
         $this->delete(array('id' => $id));
+    }
+
+    public function findBy($keyword)
+    {
+
     }
 
 }

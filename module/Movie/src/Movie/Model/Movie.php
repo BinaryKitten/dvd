@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilterInterface;
 class Movie implements InputFilterAwareInterface
 {
     public $id;
-    public $artist;
+    public $title;
     public $created_date;
 
     protected $inputFilter;

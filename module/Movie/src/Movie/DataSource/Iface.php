@@ -1,12 +1,13 @@
 <?php
 
-namespace Movie;
+namespace Movie\DataSource;
 
 /**
  *
  * @author k.reeve
  */
-interface DataSourceInterface {
+interface Iface {
     public function fetchAll();
     public function getMovie($id);
+    public function findBy($keyword);
 }

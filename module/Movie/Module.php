@@ -1,9 +1,10 @@
 <?php
 
 namespace Movie;
-use Movie\Model\MovieTable;
 use Zend\ServiceManager\ServiceManager;
 use ZendService\Amazon\Amazon as AmazonService;
+use Movie\DataSource\Database as DbDataSource;
+use Movie\DataSource\Amazon as AmazonDataSource;
 
 class Module
 {
@@ -39,10 +40,18 @@ class Module
     public function getServiceConfig()
     {
         return array(
+            'aliases' => array(
+                'MovieSource' => 'MovieSource\Database'
+            ),
             'factories' => array(
-                'MovieSource' =>  function($sm) {
+                'MovieSource\Amazon' => function($sm) {
+                    $service        = $sm->get('ZendService\Amazon\Amazon');
+                    $associateTag   = $sm->get('amazon_associate_tag');
+                    return new AmazonDataSource($service, $associateTag);
+                },
+                'MovieSource\Database' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new MovieTable($dbAdapter);
+                    $table = new DbDataSource($dbAdapter);
                     return $table;
                 },
                 'logger' => function($sm) {
