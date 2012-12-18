@@ -13,7 +13,7 @@ use Zend\Debug\Debug as Zend_Debug;
  */
 class IndexController extends AbstractActionController 
 {
-    protected $movieTable;
+    protected $movieSource;
 
     public function indexAction()
     {
@@ -43,10 +43,10 @@ class IndexController extends AbstractActionController
 
     public function getMovieTable()
     {
-        if (!$this->movieTable) {
+        if (!$this->movieSource) {
             $sm = $this->getServiceLocator();
-            $this->movieTable = $sm->get('MovieSource');
+            $this->movieSource = $sm->get('MovieSource');
         }
-        return $this->movieTable;
+        return $this->movieSource;
     }
 }
