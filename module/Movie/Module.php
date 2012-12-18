@@ -24,7 +24,8 @@ class Module
 
     public function onBootstrap($e)
     {
-        $sharedEvents = $e->getApplication()->getServiceManager()->get('moduleManager')->getEventManager()->getSharedManager();
+//        $sharedEvents = $e->getApplication()->getServiceManager()->get('moduleManager')->getEventManager()->getSharedManager();
+        $sharedEvents = $e->getTarget()->getEventManager()->getSharedManager();
         $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
             $controller   = $e->getTarget();
             $matchedRoute = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
