@@ -40,7 +40,7 @@ class Module
     {
         return array(
             'factories' => array(
-                'Movie\Model\MovieTable' =>  function($sm) {
+                'MovieSource' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new MovieTable($dbAdapter);
                     return $table;

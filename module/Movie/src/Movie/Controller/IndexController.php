@@ -45,7 +45,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->movieTable) {
             $sm = $this->getServiceLocator();
-            $this->movieTable = $sm->get('Movie\Model\MovieTable');
+            $this->movieTable = $sm->get('MovieSource');
         }
         return $this->movieTable;
     }

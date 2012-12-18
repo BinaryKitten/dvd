@@ -2,12 +2,13 @@
 
 namespace Movie\Model;
 
+use Movie\DataSourceInterface;
 use Movie\Model\Movie as MovieModel;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 
-class MovieTable extends AbstractTableGateway
+class MovieTable extends AbstractTableGateway implements DataSourceInterface
 {
     protected $table = 'movie';
 
