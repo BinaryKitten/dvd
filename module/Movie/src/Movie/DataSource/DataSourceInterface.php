@@ -6,7 +6,7 @@ namespace Movie\DataSource;
  *
  * @author k.reeve
  */
-interface Iface {
+interface DataSourceInterface {
     public function fetchAll();
     public function getMovie($id);
     public function findBy($keyword);

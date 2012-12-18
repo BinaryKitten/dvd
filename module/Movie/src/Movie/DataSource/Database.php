@@ -5,7 +5,7 @@ namespace Movie\DataSource;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
-use Movie\DataSource\Iface as DataSourceInterface;
+use Movie\DataSource\DataSourceInterface;
 use Movie\Model\Movie as MovieModel;
 
 class Database extends AbstractTableGateway implements DataSourceInterface

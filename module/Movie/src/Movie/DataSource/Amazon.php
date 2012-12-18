@@ -2,7 +2,7 @@
 
 namespace Movie\DataSource;
 
-use Movie\DataSource\Iface as DataSourceInterface;
+use Movie\DataSource\DataSourceInterface;
 use Movie\Model\Movie as MovieModel;
 use ZendService\Amazon\Amazon as AmazonService;
 
