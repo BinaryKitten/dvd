@@ -4,7 +4,6 @@ namespace Movie\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Debug\Debug as Zend_Debug;
 
 /**
  * Description of IndexController
@@ -17,6 +16,7 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        //User Will always be logged in due to Event/onBootstrap in Movie\Module
         $userIdentity = $this->zfcUserAuthentication()->getIdentity();
         $userMovies = $this->getMovieTable()->findAllOwnedByUser(
           $userIdentity->getId()
