@@ -4,7 +4,6 @@ namespace Movie\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Debug\Debug as Zend_Debug;
 
 /**
  * Description of IndexController
@@ -13,29 +12,16 @@ use Zend\Debug\Debug as Zend_Debug;
  */
 class IndexController extends AbstractActionController 
 {
-    protected $movieTable;
+    protected $movieSource;
 
     public function indexAction()
     {
+        //User Will always be logged in due to Event/onBootstrap in Movie\Module
         $userIdentity = $this->zfcUserAuthentication()->getIdentity();
         $userMovies = $this->getMovieTable()->findAllOwnedByUser(
           $userIdentity->getId()
-        );
-
-        /** @var \ZendService\Amazon\Amazon $amazon **/
-        $amazon = $this->getServiceLocator()->get('ZendService\Amazon\Amazon');
-        $items = $amazon->itemSearch(
-            array(
-                'AssociateTag'   => $this->getServiceLocator()->get('amazon_associate_tag'),
-                'SearchIndex'   => 'DVD',
-                'Keywords'      => 'Spirit',
-                'ResponseGroup' => 'Medium'
-            )
-        );
+        );        
         
-        foreach($items as $item) {
-            echo "<img src='".$item->SmallImage->Url."' />";
-        }
         return new ViewModel(array(
             'movies' => $userMovies,
         ));
@@ -43,10 +29,10 @@ class IndexController extends AbstractActionController
 
     public function getMovieTable()
     {
-        if (!$this->movieTable) {
+        if (!$this->movieSource) {
             $sm = $this->getServiceLocator();
-            $this->movieTable = $sm->get('Movie\Model\MovieTable');
+            $this->movieSource = $sm->get('MovieSource');
         }
-        return $this->movieTable;
+        return $this->movieSource;
     }
 }

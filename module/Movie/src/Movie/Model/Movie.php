@@ -12,7 +12,7 @@ class Movie implements InputFilterAwareInterface
     const NULL_MOVIE_ID = 0;
 
     public $id;
-    public $artist;
+    public $title;
     public $created_date;
 
     protected $inputFilter;
