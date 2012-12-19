@@ -1,6 +1,7 @@
 <?php
 $title = 'All Movies';
 $this->headTitle($title);
+
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p><a href="<?php echo $this->url('movie', array(
@@ -11,9 +12,11 @@ $this->headTitle($title);
     <th>Title</th>
     <th></th>
 </tr>
-<?php foreach($movies as $movie) : ?>
+<?php foreach($movies as $movie) :
+    $movietitle = $this->escapeHtml($movie->title);
+?>
 <tr>
-    <td><?php echo $this->escapeHtml($movie->title);?></td>
+    <td><?php echo $movietitle;?></td>
     <td>
         <a href="<?php echo $this->url('movie',
             array('action'=>'edit', 'id' => $movie->id));?>">Edit</a>

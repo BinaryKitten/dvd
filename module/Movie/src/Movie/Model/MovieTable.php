@@ -53,8 +53,8 @@ class MovieTable extends AbstractTableGateway
             'title'  => $movie->title,
         );
 
-        $id = (int)$movie->id;
-        if ($id == 0) {
+        $id = (int)$movie->movie_id;
+        if ($id == MovieModel::NULL_MOVIE_ID) {
             $data['created_at'] = date('Y-m-d');
             $this->insert($data);
         } else {
