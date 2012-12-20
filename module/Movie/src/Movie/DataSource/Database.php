@@ -3,6 +3,7 @@
 namespace Movie\DataSource;
 
 use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Db\Sql\Select as SqlSelect;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Movie\DataSource\DataSourceInterface;
@@ -29,7 +30,7 @@ class Database extends AbstractTableGateway implements DataSourceInterface
 
     public function findAllOwnedByUser($userId)
     {
-        $select = new \Zend\Db\Sql\Select($this->table);
+        $select = new SqlSelect($this->table);
         $select
             ->columns(array('*'))
             ->join(array('umc'=>'user_movie_collection'), 'umc.movie_id = movie.movie_id')
