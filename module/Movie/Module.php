@@ -25,7 +25,8 @@ class Module
     public function onBootstrap($e)
     {
 //        $sharedEvents = $e->getApplication()->getServiceManager()->get('moduleManager')->getEventManager()->getSharedManager();
-        $sharedEvents = $e->getTarget()->getEventManager()->getSharedManager();
+        $events = $e->getTarget()->getEventManager();
+        $sharedEvents = $events->getSharedManager();
         $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
             $controller   = $e->getTarget();
             $matchedRoute = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
@@ -35,6 +36,11 @@ class Module
             }
             // otherwise, redirect to the login page
             return $controller->redirect()->toRoute('zfcuser/login');
+        });
+
+        $sharedEvents->attach('\BKSimpleAcl\Module', 'binary_acl', function($e) {
+            \Zend\Debug\Debug::dump($e);
+            \Zend\Debug\Debug::dump($e->getParams());
         });
     }
 
