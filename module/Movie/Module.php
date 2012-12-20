@@ -38,9 +38,9 @@ class Module
             return $controller->redirect()->toRoute('zfcuser/login');
         });
 
-        $sharedEvents->attach('\BKSimpleAcl\Module', 'binary_acl', function($e) {
-            \Zend\Debug\Debug::dump($e);
+        $events->attach('binary_acl', function($e) {
             \Zend\Debug\Debug::dump($e->getParams());
+            return "test string";
         });
     }
 

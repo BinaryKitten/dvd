@@ -48,7 +48,7 @@ class Module implements
                     $acl    = new ZendAcl();
                    
                     $eventManager = $sm->get('moduleManager')->getEventManager();
-                    $responses = $eventManager->trigger('binary_acl','\BKSimpleAcl\Module', array('acl'=>$acl));
+                    $responses = $eventManager->trigger('binary_acl',null, array('acl'=>$acl));
                     \Zend\Debug\Debug::dump($responses, 'Responses');
                     return $acl;
                 }
