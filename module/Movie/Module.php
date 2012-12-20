@@ -39,7 +39,9 @@ class Module
         });
 
         $events->attach('binary_acl', function($e) {
-            \Zend\Debug\Debug::dump($e->getParams());
+            $params = $e->getParams();
+            $acl = $params['acl'];
+            $acl->addRole(new \Zend\Permissions\Acl\Role\GenericRole('user'));
             return "test string";
         });
     }

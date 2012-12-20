@@ -46,10 +46,11 @@ class Module implements
             'factories' => array(
                 'BkSimpleAcl' => function (ServiceManager $sm) {
                     $acl    = new ZendAcl();
+                    $acl->addRole(new ZendAclRole('guest'));
                    
-                    $eventManager = $sm->get('moduleManager')->getEventManager();
+                    $eventManager = $sm->get('application')->getEventManager();
                     $responses = $eventManager->trigger('binary_acl',null, array('acl'=>$acl));
-                    \Zend\Debug\Debug::dump($responses, 'Responses');
+                    \Zend\Debug\Debug::dump($acl);
                     return $acl;
                 }
             )
