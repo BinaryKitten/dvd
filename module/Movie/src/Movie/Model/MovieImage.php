@@ -2,32 +2,25 @@
 
 namespace Movie\Model;
 
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 use Zend\Stdlib\ArraySerializableInterface;
 
-class Movie implements
+class MovieImage implements
     InputFilterAwareInterface,
     ArraySerializableInterface
 {
 
-    const NULL_MOVIE_ID = 0;
-
+    public $image_id;
     public $movie_id;
-    public $title;
+    public $url;
+    public $width;
+    public $height;
     public $created_date;
     protected $inputFilter;
 
-    /**
-     * Used by ResultSet to pass each database row to the entity
-     */
-    public function exchangeArray($data)
+    public function exchangeArray(array $array)
     {
-        $movie_id = (isset($data['movie_id'])) ? $data['movie_id'] :(isset($data['id'])) ? $data['id'] : null;
-        $this->movie_id = $movie_id;
-        $this->title = (isset($data['title'])) ? $data['title'] : null;
+
     }
 
     public function getArrayCopy()

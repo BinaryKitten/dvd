@@ -28,23 +28,23 @@ class Database extends AbstractTableGateway implements DataSourceInterface
         return $resultSet;
     }
 
-    public function findAllOwnedByUser($userId)
+    public function findAllOwnedByUser($user_id)
     {
         $select = new SqlSelect($this->table);
         $select
             ->columns(array('*'))
             ->join(array('umc'=>'user_movie_collection'), 'umc.movie_id = movie.movie_id')
-            ->where(array('umc.user_id = ?'=>$userId));
+            ->where(array('umc.user_id = ?'=>$user_id));
         return $this->selectWith($select);
     }
 
-    public function getMovie($id)
+    public function getMovie($movie_id)
     {
-        $id  = (int) $id;
-        $rowset = $this->select(array('id' => $id));
+        $movie_id  = (int) $movie_id;
+        $rowset = $this->select(array('movie_id' => $movie_id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Could not find row $movie_id");
         }
         return $row;
     }
@@ -61,16 +61,16 @@ class Database extends AbstractTableGateway implements DataSourceInterface
             $this->insert($data);
         } else {
             if ($this->getAlbum($id)) {
-                $this->update($data, array('id' => $id));
+                $this->update($data, array('movie_id' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
         }
     }
 
-    public function deleteAlbum($id)
+    public function deleteMovie($movie_id)
     {
-        $this->delete(array('id' => $id));
+        $this->delete(array('movie_id' => $movie_id));
     }
 
     public function findBy($keyword)
