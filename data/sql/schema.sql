@@ -1,3 +1,11 @@
+/*
+Target Server Type    : MYSQL
+Target Server Version : 50150
+File Encoding         : 65001
+
+Date: 2013-01-08 17:15:52
+*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -18,11 +26,14 @@ CREATE TABLE `movie` (
 -- ----------------------------
 DROP TABLE IF EXISTS `movie_image`;
 CREATE TABLE `movie_image` (
-  `image_id` int(20) NOT NULL,
+  `image_id` int(11) NOT NULL,
+  `movie_id` int(11) NOT NULL,
   `url` varchar(255) NOT NULL,
   `width` int(5) NOT NULL,
   `height` int(5) NOT NULL,
-  PRIMARY KEY (`image_id`)
+  PRIMARY KEY (`image_id`),
+  KEY `movie_id` (`movie_id`),
+  CONSTRAINT `movie_image_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`movie_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -39,7 +50,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`) USING BTREE,
   UNIQUE KEY `email` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `user_movie_collection`
@@ -53,4 +64,3 @@ CREATE TABLE `user_movie_collection` (
   CONSTRAINT `user_movie_collection_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `user_movie_collection_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`movie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
