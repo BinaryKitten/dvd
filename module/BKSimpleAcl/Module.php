@@ -17,10 +17,11 @@ use Zend\Mvc\MvcEvent;
  * @author Kathryn Reeve <Kat@BinaryKitten.com>
  */
 class Module implements
-    AutoloaderProviderInterface,
+AutoloaderProviderInterface,
     ConfigProviderInterface,
     ServiceProviderInterface
 {
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -45,12 +46,11 @@ class Module implements
         return array(
             'factories' => array(
                 'BkSimpleAcl' => function (ServiceManager $sm) {
-                    $acl    = new ZendAcl();
+                    $acl = new ZendAcl();
                     $acl->addRole(new ZendAclRole('guest'));
-                   
+
                     $eventManager = $sm->get('application')->getEventManager();
-                    $responses = $eventManager->trigger('binary_acl',null, array('acl'=>$acl));
-                    \Zend\Debug\Debug::dump($acl);
+                    $eventManager->trigger('binary_acl', null, array('acl' => $acl));
                     return $acl;
                 }
             )
@@ -63,16 +63,16 @@ class Module implements
         $application = $e->getTarget();
         // we want to lock any access to controllers to users that are not recognized
         $eventManager = $application->getEventManager();
-        $eventManager->attach(
-            'dispatch',
-            function (MvcEvent $e) use ($application) {
+        $sharedEvents = $eventManager->getSharedManager();
+        $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function (MvcEvent $e) use ($application) {
                 // 'Some\Checker' is a service that is able to check the current login status
                 $acl = $application->getServiceManager()->get('BkSimpleAcl');
+                return;
 //                if (!->check()) {
 //                    throw new BadMethodException('Your identity was not verified');
 //                }
-            },
-            1000
+            }, 1000
         );
     }
+
 }

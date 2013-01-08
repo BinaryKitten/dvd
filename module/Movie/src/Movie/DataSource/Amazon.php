@@ -11,7 +11,8 @@ use ZendService\Amazon\Amazon as AmazonService;
  *
  * @author k.reeve
  */
-class Amazon implements DataSourceInterface {
+class Amazon implements DataSourceInterface
+{
 
     /**
      * Amazon Service connection
@@ -25,12 +26,11 @@ class Amazon implements DataSourceInterface {
      */
     protected $amazonAssociateTag = '';
 
-    private function __construct(AmazonService $amazonService, $associateTag)
+    public function __construct(AmazonService $amazonService, $associateTag)
     {
-        $this->amazonService        = $amazonService;
-        $this->amazonAssociateTag   = $associateTag;
+        $this->amazonService = $amazonService;
+        $this->amazonAssociateTag = $associateTag;
     }
-
 
     public function fetchAll()
     {
@@ -47,21 +47,23 @@ class Amazon implements DataSourceInterface {
     {
         $items = $this->amazonService->itemSearch(
             array(
-                'AssociateTag'  => $this->amazonAssociateTag,
-                'SearchIndex'   => 'DVD',
-                'Keywords'      => $keyword,
+                'AssociateTag' => $this->amazonAssociateTag,
+                'SearchIndex' => 'DVD',
+                'Keywords' => $keyword,
                 'ResponseGroup' => 'Medium'
             )
         );
         $movies = array();
-        foreach($items as $amazonItem) {
+        foreach ($items as $amazonItem) {
+            \Zend\Debug\Debug::dump($amazonItem);
             $movie = new MovieModel;
             $movie->exchangeArray(array(
-                'id'    => $amazonItem->ASIN,
+                'id' => $amazonItem->ASIN,
                 'title' => $amazonItem->Title
             ));
             $movies[] = $movie;
         }
         return $movies;
     }
+
 }

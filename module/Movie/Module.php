@@ -1,6 +1,7 @@
 <?php
 
 namespace Movie;
+
 use Zend\ServiceManager\ServiceManager;
 use ZendService\Amazon\Amazon as AmazonService;
 use Movie\DataSource\Database as DbDataSource;
@@ -8,6 +9,7 @@ use Movie\DataSource\Amazon as AmazonDataSource;
 
 class Module
 {
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -24,26 +26,30 @@ class Module
 
     public function onBootstrap($e)
     {
-//        $sharedEvents = $e->getApplication()->getServiceManager()->get('moduleManager')->getEventManager()->getSharedManager();
         $events = $e->getTarget()->getEventManager();
         $sharedEvents = $events->getSharedManager();
         $sharedEvents->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
-            $controller   = $e->getTarget();
-            $matchedRoute = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
-            $allowedRoutes = array('zfcuser/login', 'zfcuser/register');
-            if (in_array($matchedRoute, $allowedRoutes) || $controller->zfcUserAuthentication()->hasIdentity()) {
-                return; // they're logged in or on the login page, allow
-            }
-            // otherwise, redirect to the login page
-            return $controller->redirect()->toRoute('zfcuser/login');
-        });
+                $controller = $e->getTarget();
+                $matchedRoute = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
+                $allowedRoutes = array('zfcuser/login', 'zfcuser/register');
+                if (in_array($matchedRoute, $allowedRoutes) || $controller->zfcUserAuthentication()->hasIdentity()) {
+                    return; // they're logged in or on the login page, allow
+                }
+                // otherwise, redirect to the login page
+                return $controller->redirect()->toRoute('zfcuser/login');
+            }, 1000
+        );
 
         $events->attach('binary_acl', function($e) {
-            $params = $e->getParams();
-            $acl = $params['acl'];
-            $acl->addRole(new \Zend\Permissions\Acl\Role\GenericRole('user'));
-            return "test string";
-        });
+                $params = $e->getParams();
+                $acl = $params['acl'];
+                $roles = $acl->getRoles();
+
+                $role = new \Zend\Permissions\Acl\Role\GenericRole('user');
+                if ($acl->hasRole('guest')) {
+                    $acl->addRole($role, 'guest');
+                }
+            });
     }
 
     public function getServiceConfig()
@@ -54,8 +60,8 @@ class Module
             ),
             'factories' => array(
                 'MovieSource\Amazon' => function($sm) {
-                    $service        = $sm->get('ZendService\Amazon\Amazon');
-                    $associateTag   = $sm->get('amazon_associate_tag');
+                    $service = $sm->get('ZendService\Amazon\Amazon');
+                    $associateTag = $sm->get('amazon_associate_tag');
                     return new AmazonDataSource($service, $associateTag);
                 },
                 'MovieSource\Database' => function($sm) {
@@ -70,18 +76,16 @@ class Module
                     return $logger;
                 },
                 'ZendService\Amazon\Amazon' => function(ServiceManager $sm) {
-                    $fullconfig         = $sm->get('config');
-                    $amazonApiDetails   = $fullconfig['amazon_api_details'];
-                    $amazon             = new AmazonService(
-                        $amazonApiDetails['api_key'],
-                        $amazonApiDetails['region'],
-                        $amazonApiDetails['secret_key']
+                    $fullconfig = $sm->get('config');
+                    $amazonApiDetails = $fullconfig['amazon_api_details'];
+                    $amazon = new AmazonService(
+                        $amazonApiDetails['api_key'], $amazonApiDetails['region'], $amazonApiDetails['secret_key']
                     );
                     return $amazon;
                 },
                 'amazon_associate_tag' => function(ServiceManager $sm) {
-                    $fullconfig         = $sm->get('config');
-                    $amazonApiDetails   = $fullconfig['amazon_api_details'];
+                    $fullconfig = $sm->get('config');
+                    $amazonApiDetails = $fullconfig['amazon_api_details'];
                     return $amazonApiDetails['associate_tag'];
                 },
             ),
@@ -92,4 +96,5 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
+
 }

@@ -10,8 +10,9 @@ use Zend\View\Model\ViewModel;
  *
  * @author Kathryn
  */
-class IndexController extends AbstractActionController 
+class IndexController extends AbstractActionController
 {
+
     protected $movieSource;
 
     public function indexAction()
@@ -19,12 +20,14 @@ class IndexController extends AbstractActionController
         //User Will always be logged in due to Event/onBootstrap in Movie\Module
         $userIdentity = $this->zfcUserAuthentication()->getIdentity();
         $userMovies = $this->getMovieTable()->findAllOwnedByUser(
-          $userIdentity->getId()
-        );        
-        
-        return new ViewModel(array(
-            'movies' => $userMovies,
-        ));
+            $userIdentity->getId()
+        );
+
+        $amazon = $this->getServiceLocator()->get('MovieSource\Amazon');
+        $movies = $amazon->findBy('titan');
+
+        \Zend\Debug\Debug::dump($movies);
+        return new ViewModel(array('movies' => $userMovies,));
     }
 
     public function getMovieTable()
@@ -35,4 +38,5 @@ class IndexController extends AbstractActionController
         }
         return $this->movieSource;
     }
+
 }
