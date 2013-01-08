@@ -23,7 +23,7 @@ class Movie implements
     /**
      * Used by ResultSet to pass each database row to the entity
      */
-    public function exchangeArray($data)
+    public function exchangeArray(array $data)
     {
         $movie_id = (isset($data['movie_id'])) ? $data['movie_id'] :(isset($data['id'])) ? $data['id'] : null;
         $this->movie_id = $movie_id;
