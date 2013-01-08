@@ -26,7 +26,12 @@ class IndexController extends AbstractActionController
         $amazon = $this->getServiceLocator()->get('MovieSource\Amazon');
         $movies = $amazon->findBy('titan');
 
-        \Zend\Debug\Debug::dump($movies);
+//        \Zend\Debug\Debug::dump($movies);
+        echo '<ul>';
+        foreach($movies as $amazonMovie) {
+            printf('<li><img src="%1$s" alt="Small cover for %2$s" /><strong>%2$s</strong></li>', $amazonMovie->MediumImage->Url, $amazonMovie->Title);
+        }
+        echo '</ul>';
         return new ViewModel(array('movies' => $userMovies,));
     }
 

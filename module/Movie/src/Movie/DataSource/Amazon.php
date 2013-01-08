@@ -55,13 +55,13 @@ class Amazon implements DataSourceInterface
         );
         $movies = array();
         foreach ($items as $amazonItem) {
-            \Zend\Debug\Debug::dump($amazonItem);
+//            \Zend\Debug\Debug::dump($amazonItem);
             $movie = new MovieModel;
             $movie->exchangeArray(array(
                 'id' => $amazonItem->ASIN,
                 'title' => $amazonItem->Title
             ));
-            $movies[] = $movie;
+            $movies[] = $amazonItem;
         }
         return $movies;
     }
